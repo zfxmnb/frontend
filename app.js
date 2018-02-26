@@ -1,11 +1,14 @@
-var app = require('koa')()
+const app = require('koa')()
   , logger = require('koa-logger')
   , json = require('koa-json')
   , views = require('koa-views')
-  , onerror = require('koa-onerror');
+  , onerror = require('koa-onerror')
+  ,response = require('controllor/response.js')
+  ,serverConfig = require('webpack.config.js');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
+const index = require('./routes/index');
+const response = require('./controllor/response');
+response.init(serverConfig);
 
 // error handler
 onerror(app);
@@ -30,7 +33,6 @@ app.use(require('koa-static')(__dirname + '/public'));
 
 // routes definition
 app.use(index.routes(), index.allowedMethods());
-app.use(users.routes(), users.allowedMethods());
 
 // error-handling
 app.on('error', (err, ctx) => {
